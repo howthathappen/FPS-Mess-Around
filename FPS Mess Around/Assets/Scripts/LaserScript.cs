@@ -124,6 +124,10 @@ public class LaserScript : MonoBehaviour {
 		guiStyle.fontSize = 20;
 		GUILayout.Label("Ctrl+P to stop the game", guiStyle);
 		
+		//can also use a GUIStyle to change the color
+		//public GUIStyle style;
+		//style.normal.textColor = color.black;
+		GUI.contentColor = Color.yellow;
 		GUI.Label(new Rect(Screen.width - 50, 0, 50, 50), "Ammo: " + currentAmmo + " / " + clipSize);
 	}
 }
