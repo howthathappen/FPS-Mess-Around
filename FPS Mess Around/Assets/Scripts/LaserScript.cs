@@ -9,9 +9,8 @@ public class LaserScript : MonoBehaviour {
 	public float reloadTime;
 	
 	private int currentAmmo;
-	private float elapsedTime = 0f;
+	private float elapsedTime = 1000f;
 	private int clipsRemaining;
-	private bool pulledTheTrigger;
 	//endMyCode
 	
 	private LineRenderer line;
