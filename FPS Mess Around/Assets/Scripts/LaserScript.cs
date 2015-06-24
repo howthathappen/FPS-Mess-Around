@@ -3,12 +3,26 @@ using System.Collections;
 
 public class LaserScript : MonoBehaviour {
 
+	//my code
+	public int clipSize;
+	public float fireRate;
+	public float reloadTime;
+	
+	private int currentAmmo;
+	private float elapsedTime = 0f;
+	private int clipsRemaining;
+	private bool pulledTheTrigger;
+	//endMyCode
+	
 	private LineRenderer line;
 	private GUIStyle guiStyle = new GUIStyle();
 	private Light _light;
 	
-	void Start () 
+	void Start ()
 	{
+		currentAmmo = clipSize; //my code
+		clipsRemaining = 10; //my code
+		
 		line = this.gameObject.GetComponent<LineRenderer>();
 		line.enabled = false;
 		
@@ -20,10 +34,24 @@ public class LaserScript : MonoBehaviour {
 	
 	void Update () 
 	{
-		if(Input.GetButtonDown("Fire1"))
+		elapsedTime += Time.deltaTime;
+		
+		if(Input.GetButton("Fire1") && elapsedTime >= fireRate && currentAmmo > 0)
 		{
 			StopCoroutine("FireLaser");
 			StartCoroutine("FireLaser");
+			
+			//my code
+			currentAmmo--;
+			
+			if(currentAmmo == 0 && clipsRemaining > 0)
+			{
+				//reload
+				Invoke("Reload", reloadTime);
+			}
+			
+			elapsedTime = 0f;
+			//endMyCode
 		}
 	}
 	
@@ -32,8 +60,8 @@ public class LaserScript : MonoBehaviour {
 		line.enabled = true;
 		_light.enabled = true;
 		
-		while(Input.GetButton("Fire1"))
-		{
+//		while(Input.GetButton("Fire1"))
+//		{
 			line.material.mainTextureOffset = new Vector2(0, Time.time); //doesn't really do anything with a solid color
 		
 			//Ray ray = new Ray(transform.position, transform.forward); //their code
@@ -59,7 +87,7 @@ public class LaserScript : MonoBehaviour {
 //			}
 			
 			yield return null;
-		}
+		//}
 		
 		line.enabled = false;
 		_light.enabled = false;
@@ -86,9 +114,17 @@ public class LaserScript : MonoBehaviour {
 		}
 	}
 	
+	private void Reload ()
+	{
+		currentAmmo = clipSize;
+		clipsRemaining--;
+	}
+	
 	private void OnGUI ()
 	{
 		guiStyle.fontSize = 20;
 		GUILayout.Label("Ctrl+P to stop the game", guiStyle);
+		
+		GUI.Label(new Rect(Screen.width - 50, 0, 50, 50), "Ammo: " + currentAmmo + " / " + clipSize);
 	}
 }
