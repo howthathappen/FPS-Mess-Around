@@ -42,4 +42,12 @@ public class WeaponPickup : MonoBehaviour {
 			canPickUpWeapon = true;
 		}
 	}
+	
+	private void OnTriggerExit (Collider other)
+	{
+		if(other.gameObject.tag == ("Player"))
+		{
+			canPickUpWeapon = false;
+		}
+	}
 }
