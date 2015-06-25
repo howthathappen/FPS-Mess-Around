@@ -4,14 +4,17 @@ using System.Collections.Generic;
 
 public class WeaponSwappingScript : MonoBehaviour {
 
-	private List<GameObject> gunList = new List<GameObject>();
-	private int currentWeaponIndex = 0;
+	[HideInInspector] public List<GameObject> gunList = new List<GameObject>();
+	[HideInInspector] public int currentWeaponIndex = 0;
 	
 	void Start ()
 	{
 		for(int i = 0; i < this.gameObject.transform.childCount; i++)
 		{
-			gunList.Add(this.gameObject.transform.GetChild(i).gameObject);
+			if(this.gameObject.transform.GetChild(i).tag == "Equipped")
+			{
+				gunList.Add(this.gameObject.transform.GetChild(i).gameObject);
+			}
 		}
 	}
 	
